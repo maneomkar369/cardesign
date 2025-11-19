@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Heart, MessageCircle, Edit, User, Eye } from 'lucide-react';
 
 const DesignDetail = () => {
   const { slug } = useParams();
@@ -93,22 +94,50 @@ const DesignDetail = () => {
           {/* Subtle reflection effect */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg relative z-10 group-hover:text-white transition-colors duration-300">{design.title}</h1>
-          <p className="text-white/80 mb-4 relative z-10 group-hover:text-white/90 transition-colors duration-300">{design.description}</p>
-          <p className="text-white/60 mb-2 relative z-10">By {design.author.username}</p>
-          <p className="text-white/60 mb-4 relative z-10">Likes: {design.likes_count}</p>
-          <button
-            onClick={handleLike}
-            className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300 mr-4 relative z-10 hover:bg-white/40 hover:border-white/40"
-          >
-            Like
-          </button>
-          <a
-            href={`/designs/${design.slug}/edit`}
-            className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300 relative z-10 hover:bg-white/40 hover:border-white/40"
-          >
-            Edit Design
-          </a>
+          <div className="relative z-10">
+            <h1 className="text-4xl font-light text-white tracking-wide mb-4 group-hover:text-white transition-colors duration-300">
+              {design.title}
+            </h1>
+            <p className="text-white/70 text-lg font-light mb-6 group-hover:text-white/80 transition-colors duration-300">
+              {design.description}
+            </p>
+
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <User className="w-5 h-5 text-white/60" />
+                  <span className="text-white/60 font-light">
+                    {design.author.username}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-white/60" />
+                  <span className="text-white/60 font-light">{design.views || 0}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-white/60" />
+                  <span className="text-white/60 font-light">{design.likes_count}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleLike}
+                  className="flex items-center gap-2 backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white hover:bg-white/30 transition-all duration-300 hover:bg-white/40 hover:border-white/40 font-light"
+                >
+                  <Heart className="w-4 h-4" />
+                  Like
+                </button>
+                <a
+                  href={`/designs/${design.slug}/edit`}
+                  className="flex items-center gap-2 backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white hover:bg-white/30 transition-all duration-300 hover:bg-white/40 hover:border-white/40 font-light"
+                >
+                  <Edit className="w-4 h-4" />
+                  Edit
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden group hover:bg-white/15 transition-all duration-500">
@@ -123,56 +152,44 @@ const DesignDetail = () => {
           {/* Subtle reflection effect */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          <h2 className="text-3xl font-semibold text-white mb-6 drop-shadow-md relative z-10 group-hover:text-white transition-colors duration-300">Comments</h2>
-          <div className="space-y-4 mb-6 relative z-10">
-            {comments.map((comment) => (
-              <div key={comment.id} className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-lg p-4 hover:bg-white/15 transition-all duration-300">
-                <p className="text-white/80">{comment.text}</p>
-                <p className="text-white/60 text-sm">By {comment.user.username}</p>
-              </div>
-            ))}
-          </div>
-          <div className="space-y-4 relative z-10">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="w-full backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:bg-white/25 focus:bg-white/25"
-              placeholder="Add a comment..."
-              rows="3"
-            />
-            <button
-              onClick={handleComment}
-              className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300 font-semibold hover:bg-white/40 hover:border-white/40"
-            >
-              Comment
-            </button>
-          </div>
-        </div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-6">
+              <MessageCircle className="w-6 h-6 text-white/80" />
+              <h2 className="text-2xl font-light text-white tracking-wide group-hover:text-white transition-colors duration-300">
+                Comments
+              </h2>
+            </div>
 
-        <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-8 shadow-2xl">
-          <h2 className="text-3xl font-semibold text-white mb-6 drop-shadow-md">Comments</h2>
-          <div className="space-y-4 mb-6">
-            {comments.map((comment) => (
-              <div key={comment.id} className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-lg p-4">
-                <p className="text-white/80">{comment.text}</p>
-                <p className="text-white/60 text-sm">By {comment.user.username}</p>
-              </div>
-            ))}
-          </div>
-          <div className="space-y-4">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="w-full backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
-              placeholder="Add a comment..."
-              rows="3"
-            />
-            <button
-              onClick={handleComment}
-              className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300"
-            >
-              Comment
-            </button>
+            <div className="space-y-4 mb-6">
+              {comments.map((comment) => (
+                <div key={comment.id} className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-lg p-4 hover:bg-white/15 transition-all duration-300">
+                  <p className="text-white/70 font-light mb-2">{comment.text}</p>
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-white/60" />
+                    <span className="text-white/60 text-sm font-light">
+                      {comment.user.username}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="w-full backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:bg-white/25 focus:bg-white/25 font-light"
+                placeholder="Add a comment..."
+                rows="3"
+              />
+              <button
+                onClick={handleComment}
+                className="flex items-center gap-2 backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300 font-light hover:bg-white/40 hover:border-white/40"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Comment
+              </button>
+            </div>
           </div>
         </div>
       </div>

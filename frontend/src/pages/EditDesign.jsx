@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Stage, Layer, Image as KonvaImage, Rect } from 'react-konva';
 import Konva from 'konva';
 import axios from 'axios';
+import { Edit, Save, Palette, Layers } from 'lucide-react';
 
 const EditDesign = () => {
   const { slug } = useParams();
@@ -94,7 +95,12 @@ const EditDesign = () => {
           {/* Subtle reflection effect */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          <h1 className="text-4xl font-bold text-white mb-6 drop-shadow-lg relative z-10 group-hover:text-white transition-colors duration-300">Edit {design.title}</h1>
+          <div className="flex items-center gap-4 mb-6 relative z-10">
+            <Edit className="w-8 h-8 text-white/80" />
+            <h1 className="text-3xl font-light text-white tracking-wide group-hover:text-white transition-colors duration-300">
+              Edit {design.title}
+            </h1>
+          </div>
           <div className="flex flex-col lg:flex-row gap-8 relative z-10">
             <div className="flex-1">
               <div className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-xl p-4 shadow-xl hover:bg-white/15 transition-all duration-300">
@@ -116,16 +122,33 @@ const EditDesign = () => {
                   }}
                 ></div>
 
-                <h2 className="text-2xl font-semibold text-white mb-4 drop-shadow-md relative z-10 group-hover:text-white transition-colors duration-300">Assets</h2>
+                <div className="flex items-center gap-3 mb-4 relative z-10">
+                  <Palette className="w-6 h-6 text-white/80" />
+                  <h2 className="text-xl font-light text-white tracking-wide group-hover:text-white transition-colors duration-300">
+                    Design Assets
+                  </h2>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4 mb-6 relative z-10">
                   {assets.map((asset) => (
-                    <img key={asset.id} src={asset.file} alt={asset.name} className="w-full h-16 object-cover rounded-lg border border-white/20 cursor-pointer hover:border-white/50 transition-all duration-300 hover:scale-105" />
+                    <div key={asset.id} className="group/asset relative">
+                      <img
+                        src={asset.file}
+                        alt={asset.name}
+                        className="w-full h-16 object-cover rounded-lg border border-white/20 cursor-pointer hover:border-white/50 transition-all duration-300 hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/asset:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                        <Layers className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
                   ))}
                 </div>
+
                 <button
                   onClick={handleSaveVersion}
-                  className="w-full backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300 font-semibold hover:bg-white/40 hover:border-white/40 relative z-10"
+                  className="w-full flex items-center justify-center gap-3 backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-6 py-3 text-white hover:bg-white/30 transition-all duration-300 font-light hover:bg-white/40 hover:border-white/40 relative z-10"
                 >
+                  <Save className="w-5 h-5" />
                   Save Version
                 </button>
               </div>

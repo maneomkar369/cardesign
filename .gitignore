@@ -20,6 +20,8 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+venv/
+backend/venv/
 
 # Django
 *.log
@@ -53,3 +55,11 @@ Thumbs.db
 # Media
 media/
 staticfiles/
+
+# Large 3D model source files (keep only web-optimized formats)
+*.blend
+*.blend1
+*.max
+*.mb
+*.ma
+*.fbx

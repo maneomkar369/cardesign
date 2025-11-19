@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import DesignDetail from './pages/DesignDetail';
 import CreateDesign from './pages/CreateDesign';
 import EditDesign from './pages/EditDesign';
+import Configurator from './pages/Configurator';
 
 // Dynamic background component with car visuals and mouse interaction
 const DynamicBackground = () => {
@@ -172,6 +173,7 @@ function App() {
         <div className="relative z-10">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/configurator" element={<Configurator />} />
             <Route path="/designs/:slug" element={<DesignDetail />} />
             <Route path="/create" element={<CreateDesign />} />
             <Route path="/designs/:slug/edit" element={<EditDesign />} />
