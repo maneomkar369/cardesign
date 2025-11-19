@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.shortcuts import get_object_or_404
@@ -11,6 +11,13 @@ from .serializers import (
     DesignAssetSerializer, DesignVersionSerializer, LikeSerializer,
     CommentSerializer, TagSerializer, DesignImageSerializer
 )
+
+
+class IsAuthorOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
+        return obj.author == request.user
 
 
 class RegisterView(generics.CreateAPIView):
@@ -46,23 +53,8 @@ class DesignListCreateView(generics.ListCreateAPIView):
 class DesignDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Design.objects.all()
     serializer_class = DesignSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthorOrReadOnly]
     lookup_field = 'slug'
-
-    def get_permissions(self):
-        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
-            return [IsAuthenticated()]
-        return super().get_permissions()
-
-    def perform_update(self, serializer):
-        if serializer.instance.author != self.request.user:
-            raise PermissionError("You can only edit your own designs.")
-        serializer.save()
-
-    def perform_destroy(self, instance):
-        if instance.author != self.request.user:
-            raise PermissionError("You can only delete your own designs.")
-        instance.delete()
 
 
 class DesignImageUploadView(generics.CreateAPIView):
