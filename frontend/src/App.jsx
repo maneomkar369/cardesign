@@ -1,6 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import Navigation from './components/Navigation';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import AdminHome from './pages/AdminHome';
+import DesignerHome from './pages/DesignerHome';
+import UserHome from './pages/UserHome';
 import DesignDetail from './pages/DesignDetail';
 import CreateDesign from './pages/CreateDesign';
 import EditDesign from './pages/EditDesign';
@@ -170,13 +177,64 @@ function App() {
     <Router>
       <div className="min-h-screen relative">
         <DynamicBackground />
-        <div className="relative z-10">
+        <Navigation />
+        <div className="relative z-10 pt-16">
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/configurator" element={<Configurator />} />
             <Route path="/designs/:slug" element={<DesignDetail />} />
-            <Route path="/create" element={<CreateDesign />} />
-            <Route path="/designs/:slug/edit" element={<EditDesign />} />
+
+            {/* Protected Routes - Admin Only */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminHome />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Protected Routes - Designer Only */}
+            <Route
+              path="/designer"
+              element={
+                <ProtectedRoute allowedRoles={['designer']}>
+                  <DesignerHome />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create"
+              element={
+                <ProtectedRoute allowedRoles={['designer']}>
+                  <CreateDesign />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/designs/:slug/edit"
+              element={
+                <ProtectedRoute allowedRoles={['designer']}>
+                  <EditDesign />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Protected Routes - User Only */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['user']}>
+                  <UserHome />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Fallback for unauthorized access */}
+            <Route path="*" element={<Home />} />
           </Routes>
         </div>
       </div>
