@@ -23,34 +23,54 @@ const Home = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Car Design Gallery</h1>
-      <div className="mb-4 flex gap-2">
-        <input
-          type="text"
-          placeholder="Search designs..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          placeholder="Filter by tag..."
-          value={tag}
-          onChange={(e) => setTag(e.target.value)}
-          className="border p-2 rounded"
-        />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {designs.map((design) => (
-          <div key={design.id} className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold">{design.title}</h2>
-            <p>{design.description}</p>
-            <p>By {design.author.username}</p>
-            <p>Likes: {design.likes_count}</p>
-            <a href={`/designs/${design.slug}`} className="text-blue-500">View</a>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-20"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+      {/* Floating Glass Panels */}
+      <div className="relative z-10 container mx-auto p-8">
+        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-8 shadow-2xl mb-8">
+          <h1 className="text-5xl font-bold text-white mb-6 text-center drop-shadow-lg">
+            Car Design Gallery
+          </h1>
+          <div className="flex gap-4 justify-center mb-6">
+            <input
+              type="text"
+              placeholder="Search designs..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
+            />
+            <input
+              type="text"
+              placeholder="Filter by tag..."
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
+            />
           </div>
-        ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {designs.map((design) => (
+            <div
+              key={design.id}
+              className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl p-6 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-500 transform hover:scale-105"
+            >
+              <h2 className="text-2xl font-semibold text-white mb-2 drop-shadow-md">{design.title}</h2>
+              <p className="text-white/80 mb-4">{design.description}</p>
+              <p className="text-white/60 mb-2">By {design.author.username}</p>
+              <p className="text-white/60 mb-4">Likes: {design.likes_count}</p>
+              <a
+                href={`/designs/${design.slug}`}
+                className="inline-block backdrop-blur-sm bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white hover:bg-white/30 transition-all duration-300"
+              >
+                View Design
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

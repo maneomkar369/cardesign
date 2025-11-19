@@ -7,7 +7,7 @@ import EditDesign from './pages/EditDesign';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/designs/:slug" element={<DesignDetail />} />
