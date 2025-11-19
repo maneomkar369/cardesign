@@ -1,8 +1,10 @@
 import { create } from 'zustand';
+import { carModels } from '../config/carModels';
 
 export const useConfiguratorStore = create((set) => ({
   // Vehicle Configuration
-  selectedColor: '#1a1a1a',
+  selectedCarId: 'bmw-m4-csl', // Default car
+  selectedColor: '#3d3d3d',
   selectedWheels: 'sport',
   selectedInterior: 'black-leather',
   selectedModel: 'sedan',
@@ -57,6 +59,16 @@ export const useConfiguratorStore = create((set) => ({
   arMode: false,
   
   // Actions
+  setCarModel: (carId) => {
+    const car = carModels.find(c => c.id === carId);
+    if (car) {
+      set({ 
+        selectedCarId: carId,
+        selectedColor: car.colors[0].hex,
+        performanceStats: car.specs
+      });
+    }
+  },
   setColor: (color) => set({ selectedColor: color }),
   setWheels: (wheels) => set({ selectedWheels: wheels }),
   setInterior: (interior) => set({ selectedInterior: interior }),
@@ -89,9 +101,20 @@ export const useConfiguratorStore = create((set) => ({
   
   calculateTotalPrice: () => {
     const state = useConfiguratorStore.getState();
-    const basePrice = 45000;
+    const currentCar = carModels.find(c => c.id === state.selectedCarId);
+    const basePrice = currentCar?.basePrice || 45000;
+    
     const wheelPrice = state.wheels.find(w => w.id === state.selectedWheels)?.price || 0;
     const interiorPrice = state.interiors.find(i => i.id === state.selectedInterior)?.price || 0;
-    return basePrice + wheelPrice + interiorPrice;
+    
+    // Find selected color price from current car
+    const colorPrice = currentCar?.colors.find(c => c.hex === state.selectedColor)?.price || 0;
+    
+    return basePrice + wheelPrice + interiorPrice + colorPrice;
+  },
+  
+  getCurrentCar: () => {
+    const state = useConfiguratorStore.getState();
+    return carModels.find(c => c.id === state.selectedCarId);
   }
 }));

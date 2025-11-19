@@ -11,12 +11,13 @@ import {
   Eye,
   Smartphone
 } from 'lucide-react';
-import VehicleConfigurator from '../components/VehicleConfigurator';
+import MultiModelVehicleConfigurator from '../components/MultiModelVehicleConfigurator';
 import CustomizationPanel from '../components/CustomizationPanel';
 import PerformanceDashboard from '../components/PerformanceDashboard';
 import InCarExperience from '../components/InCarExperience';
 import ARPreview from '../components/ARPreview';
 import BuildAndOrder from '../components/BuildAndOrder';
+import CarSelector from '../components/CarSelector';
 import { useConfiguratorStore } from '../store/configuratorStore';
 
 export default function Configurator() {
@@ -46,10 +47,8 @@ export default function Configurator() {
     <div className="relative min-h-screen overflow-hidden">
       {/* 3D Viewer */}
       <div className={`${fullscreen ? 'fixed inset-0 z-40' : 'relative h-screen'}`}>
-        <VehicleConfigurator />
-      </div>
-
-      {/* Top Control Bar */}
+        <MultiModelVehicleConfigurator />
+      </div>      {/* Top Control Bar */}
       <motion.div
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -58,6 +57,11 @@ export default function Configurator() {
       >
         <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl px-6 py-4 shadow-2xl">
           <div className="flex items-center gap-4">
+            {/* Car Selector */}
+            <CarSelector />
+
+            <div className="w-px h-6 bg-white/20" />
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

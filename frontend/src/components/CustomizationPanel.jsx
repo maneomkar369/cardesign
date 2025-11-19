@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useConfiguratorStore } from '../store/configuratorStore';
+import { carModels } from '../config/carModels';
 import { Palette, Settings, Sparkles, Circle, DollarSign } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CustomizationPanel() {
   const [activeTab, setActiveTab] = useState('colors');
   const {
-    colors,
+    selectedCarId,
     wheels,
     interiors,
     selectedColor,
@@ -17,6 +18,10 @@ export default function CustomizationPanel() {
     setInterior,
     calculateTotalPrice
   } = useConfiguratorStore();
+
+  // Get colors from the current car model
+  const currentCar = carModels.find(car => car.id === selectedCarId);
+  const colors = currentCar?.colors || [];
 
   const tabs = [
     { id: 'colors', name: 'Exterior', icon: Palette },
@@ -74,9 +79,9 @@ export default function CustomizationPanel() {
               </div>
               
               <div className="grid grid-cols-4 gap-3">
-                {colors.map((color) => (
+                {colors.map((color, index) => (
                   <motion.button
-                    key={color.id}
+                    key={`${color.name}-${index}`}
                     onClick={() => setColor(color.hex)}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -102,15 +107,18 @@ export default function CustomizationPanel() {
               </div>
 
               <div className="mt-4 space-y-2">
-                {colors.map((color) => (
+                {colors.map((color, index) => (
                   selectedColor === color.hex && (
                     <motion.div
-                      key={color.id}
+                      key={`${color.name}-label-${index}`}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-center"
                     >
                       <p className="text-white font-light text-sm">{color.name}</p>
+                      {color.price > 0 && (
+                        <p className="text-white/60 text-xs">+${color.price.toLocaleString()}</p>
+                      )}
                     </motion.div>
                   )
                 ))}
