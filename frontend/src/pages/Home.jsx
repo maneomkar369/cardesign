@@ -23,11 +23,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-20"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-
+    <div className="min-h-screen relative overflow-hidden">
       {/* Floating Glass Panels */}
       <div className="relative z-10 container mx-auto p-8">
         <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-8 shadow-2xl mb-8">
